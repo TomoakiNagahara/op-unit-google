@@ -213,6 +213,7 @@ class Translation
 		if( $strings ){
 			$strings = Html::Decode($strings);
 			foreach( $strings as $string ){
+				$data .= '&q=' . preg_replace('/&/', '%26', $string);
 			}
 		}
 
