@@ -206,7 +206,7 @@ class Translation
 
 		//	...
 		if( $string ){
-			$data .= '&q=' .Html::Decode($string);
+			$strings[] = $string;
 		}
 
 		//	...
