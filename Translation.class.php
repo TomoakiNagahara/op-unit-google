@@ -211,8 +211,8 @@ class Translation
 
 		//	...
 		if( $strings ){
+			$strings = Html::Decode($strings);
 			foreach( $strings as $string ){
-				$data .= '&q=' .Html::Decode($string);
 			}
 		}
 
