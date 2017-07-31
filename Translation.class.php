@@ -9,11 +9,6 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-/** namespace
- *
- */
-//namespace SQL;
-
 /** Translation
  *
  * @creation  2017-06-08
@@ -39,7 +34,7 @@ class Translation
 	 *
 	 * @var array
 	 */
-	static private $_errors = null;
+	static private $_errors = [];
 
 	/** Stored of error messages.
 	 *
@@ -128,19 +123,31 @@ class Translation
 
 		//	...
 		$result = [];
-		foreach( $json['data']['languages'] as $language ){
-			//	...
-			$code = $language['language'];
-			$name = $language['name'];
 
-			//	...
-			if( $isarray ){
-				//	Return result value is array.
-				$result[] = ['code'=>$code, 'name'=>$name];
-			}else{
-				//	Return result value is assoc. (object)
-				$result[$code] = $name;
+		//	...
+		if( isset($json['data']['languages']) ){
+			foreach( $json['data']['languages'] as $language ){
+				//	...
+				$code = $language['language'];
+				$name = $language['name'];
+
+				//	...
+				if( $isarray ){
+					//	Return result value is array.
+					$result[] = ['code'=>$code, 'name'=>$name];
+				}else{
+					//	Return result value is assoc. (object)
+					$result[$code] = $name;
+				}
 			}
+		}
+
+		//	...
+		if( isset($json['error']['errors']) ){
+			foreach( $json['error']['errors'] as $error ){
+				self::$_errors[] = $error['message'];
+			}
+
 		}
 
 		//	...
@@ -190,7 +197,7 @@ class Translation
 
 		//	...
 		if( self::$_errors ){
-			return;
+			return false;
 		}
 
 		//	...
@@ -213,18 +220,29 @@ class Translation
 		if( $strings ){
 			$strings = Html::Decode($strings);
 			foreach( $strings as $string ){
-				$data .= '&q=' . preg_replace('/&/', '%26', $string);
+				$data .= '&q=' . Curl::Escape($string);
 			}
 		}
 
 		//	...
-		$text = Curl::Post($url, $data);
+		$text = Curl::Get($url.'?'.$data);
 		$json = json_decode($text, true);
 
 		//	...
 		$result = [];
-		foreach( $json['data']['translations'] as $translation ){
-			$result[] = $translation['translatedText'];
+
+		//	...
+		if( isset($json['data']['translations']) ){
+			foreach( $json['data']['translations'] as $translation ){
+				$result[] = $translation['translatedText'];
+			}
+		}
+
+		//	...
+		if( isset($json['error']['errors']) ){
+			foreach( $json['error']['errors'] as $error ){
+				self::$_errors[] = $error['message'];
+			}
 		}
 
 		//	...
