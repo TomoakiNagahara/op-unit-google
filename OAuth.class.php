@@ -9,6 +9,11 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
+/** namespace
+ *
+ */
+namespace OP\UNIT\GOOGLE;
+
 /** OAuth
  *
  * @creation  2017-10-30
@@ -22,7 +27,7 @@ class OAuth
 	/** Trait
 	 *
 	 */
-	use OP_CORE, OP_SESSION;
+	use \OP_CORE, \OP_SESSION;
 
 	/** Automatically do all process.
 	 *
@@ -60,7 +65,7 @@ class OAuth
 		//	...
 		$params = array(
 			'scope'			 => 'https://www.googleapis.com/auth/' . ($scope ?? 'userinfo.email'),
-			'client_id'		 => Env::Get('google-oauth-client-id'),
+			'client_id'		 => \Env::Get('google-oauth-client-id'),
 			'redirect_uri'	 => $redirect_uri,
 			'response_type'	 => 'code',
 		);
@@ -91,12 +96,12 @@ class OAuth
 			'code'			 => $code,
 			'grant_type'	 => 'authorization_code',
 			'redirect_uri'	 => $redirect_uri,
-			'client_id'		 => Env::Get('google-oauth-client-id'),
-			'client_secret'	 => Env::Get('google-oauth-client-secret'),
+			'client_id'		 => \Env::Get('google-oauth-client-id'),
+			'client_secret'	 => \Env::Get('google-oauth-client-secret'),
 		);
 
 		//	...
-		$json = Curl::Post('https://accounts.google.com/o/oauth2/token', $post);
+		$json = \Curl::Post('https://accounts.google.com/o/oauth2/token', $post);
 		$json = json_decode($json, true);
 
 		//	...
@@ -114,7 +119,7 @@ class OAuth
 
 		//	...
 		$url  = "https://www.googleapis.com/oauth2/v1/userinfo?access_token={$token}";
-		$json = Curl::Get($url);
+		$json = \Curl::Get($url);
 		$json = json_decode($json, true);
 
 		//	...
