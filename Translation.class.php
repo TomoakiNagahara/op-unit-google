@@ -9,6 +9,11 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
+/** namespace
+ *
+ */
+namespace OP\UNIT\GOOGLE;
+
 /** Translation
  *
  * @creation  2017-06-08
@@ -22,7 +27,7 @@ class Translation
 	/** trait.
 	 *
 	 */
-	use OP_CORE;
+	use \OP_CORE;
 
 	/** Google cloud platform's api key.
 	 *
@@ -53,9 +58,9 @@ class Translation
 	static function ApiKey($apikey=null)
 	{
 		if( $apikey ){
-			Env::Set(self::_API_KEY_, $apikey);
+			\Env::Set(self::_API_KEY_, $apikey);
 		}
-		return Env::Get( self::_API_KEY_ );
+		return \Env::Get( self::_API_KEY_ );
 	}
 
 	/** Return error message.
@@ -118,7 +123,7 @@ class Translation
 		$post['target']	 = $target;
 
 		//	...
-		$text = Curl::Get($url, $post);
+		$text = \Curl::Get($url, $post);
 		$json = json_decode($text, true);
 
 		//	...
@@ -247,14 +252,14 @@ class Translation
 
 		//	...
 		if( $strings ){
-			$strings = Html::Decode($strings);
+			$strings = \Html::Decode($strings);
 			foreach( $strings as $string ){
-				$data .= '&q=' . Curl::Escape($string);
+				$data .= '&q=' . \Curl::Escape($string);
 			}
 		}
 
 		//	...
-		$text = Curl::Get($url.'?'.$data);
+		$text = \Curl::Get($url.'?'.$data);
 		$json = json_decode($text, true);
 
 		//	...

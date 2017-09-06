@@ -12,6 +12,17 @@
 spl_autoload_register( function ($name){
 	try {
 		//	...
+		$namespace = 'OP\UNIT\GOOGLE\\';
+
+		//	...
+		if( 0 !== $pos = strpos($name, $namespace)){
+			return;
+		}
+
+		//	...
+		$name = substr($name, strlen($namespace));
+
+		//	...
 		$path = __DIR__."/{$name}.class.php";
 
 		//	...
