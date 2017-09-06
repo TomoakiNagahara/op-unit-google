@@ -156,6 +156,30 @@ class Translation
 
 	/** Translate
 	 *
+	 * <pre>
+	 * //  Set onepiece-frameworks unit directory.
+	 * Unit::SetDirectory('app:/app/unit');
+	 *
+	 * //  Load unit of google.
+	 * Unit::Load('google');
+	 *
+	 * //  Setup google cloud platform's api key.
+	 * Translation::ApiKey('your-api-key');
+	 *
+	 * //  Setup configuration.
+	 * $config = [];
+	 * $config['model']    = 'nmt';  // NMT=Neural Machine Translation, PBMT=Phrase-Based Machine Translation
+	 * $config['format']   = 'html'; // Source string format.
+	 * $config['source']   = 'en';   // Source language name. (from original)
+	 * $config['target']   = 'ja';   // Target language name. (to translate)
+	 * $config['string']   = 'This is test.'; // Single string.
+	 * $config['strings']  = null;   // Multi string.
+	 *
+	 * //  Get supported language list.
+	 * $result = Translation::Translate($config);
+	 * d($result);
+	 * </pre>
+	 *
 	 * @param  array $config
 	 * @return array
 	 */
