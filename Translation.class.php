@@ -215,6 +215,11 @@ class Translation
 		}
 
 		//	...
+		if( $target === $source ){
+			self::_Error("Source language code and target language code are the same.");
+		}
+
+		//	...
 		if( empty($string) and empty($strings) ){
 			self::_Error("Has not been set translate string.");
 		}
