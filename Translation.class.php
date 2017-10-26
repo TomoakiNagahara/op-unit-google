@@ -93,7 +93,7 @@ class Translation
 	 * @param  array $config
 	 * @return array
 	 */
-	static function Language($config)
+	static function Language($config=[])
 	{
 		//	...
 		if(!$apikey = self::ApiKey() ){
