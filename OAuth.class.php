@@ -29,7 +29,7 @@ class OAuth
 	 * @param  string $callback_url
 	 * @return array  $userinfo
 	 */
-	static function Auto($callback_url=null)
+	static function Auto($callback_url)
 	{
 		//	If already got.
 		if( $userinfo = self::UserInfo() ){
@@ -55,27 +55,28 @@ class OAuth
 	 *
 	 * @param string $redirect_uri
 	 */
-	static function Auth($redirect_uri=null)
+	static function Auth($redirect_uri, $scope=null)
 	{
 		//	...
-		if(!$redirect_uri){
-			$redirect_uri = Http::URL(['query'=>false]);
-		}
-
-		//	...
 		$params = array(
-			'scope'			 => 'https://www.googleapis.com/auth/userinfo.email',
+			'scope'			 => 'https://www.googleapis.com/auth/' . ($scope ?? 'userinfo.email'),
 			'client_id'		 => Env::Get('google-oauth-client-id'),
 			'redirect_uri'	 => $redirect_uri,
 			'response_type'	 => 'code',
 		);
+
+		//	...
 		$query = http_build_query($params);
 
 		//	...
 		$url = "https://accounts.google.com/o/oauth2/auth?$query";
 
 		//	...
-		Http::Location($url);
+		if( headers_sent($file, $line) ){
+			Notice::Set("Header has already been sent. ($file, $line)");
+		}else{
+			Header("Location: $url");
+		}
 	}
 
 	/** Callback from authentication page.
@@ -83,13 +84,8 @@ class OAuth
 	 * @param  string  $redirect_uri
 	 * @return boolean $io
 	 */
-	static function Callback($code, $redirect_uri=null)
+	static function Callback($code, $redirect_uri)
 	{
-		//	...
-		if(!$redirect_uri){
-			$redirect_uri = Http::URL(['query'=>false]);
-		}
-
 		//	...
 		$post = array(
 			'code'			 => $code,
@@ -117,7 +113,7 @@ class OAuth
 		}
 
 		//	...
-		$url = "https://www.googleapis.com/oauth2/v1/userinfo?access_token={$token}";
+		$url  = "https://www.googleapis.com/oauth2/v1/userinfo?access_token={$token}";
 		$json = Curl::Get($url);
 		$json = json_decode($json, true);
 
