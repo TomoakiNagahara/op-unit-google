@@ -15,6 +15,13 @@
  */
 namespace OP\UNIT\GOOGLE;
 
+/** Used class
+ *
+ */
+use Exception;
+use OP\OP_CORE;
+use OP\Env;
+
 /** OAuth
  *
  * @creation  2017-10-30
@@ -28,7 +35,7 @@ class OAuth
 	/** Trait
 	 *
 	 */
-	use \OP_CORE;
+	use OP_CORE;
 
 	/** Get Google OAuth client ID.
 	 *
@@ -38,8 +45,8 @@ class OAuth
 	static private function _ClientID()
 	{
 		$key = 'google-oauth-client-id';
-		if(!$val = \Env::Get($key) ){
-			throw new \Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $id)');
+		if(!$val = Env::Get($key) ){
+			throw new Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $id)');
 		}
 		return $val;
 	}
@@ -52,8 +59,8 @@ class OAuth
 	static private function _ClientSecret()
 	{
 		$key = 'google-oauth-client-secret';
-		if(!$val = \Env::Get($key) ){
-			throw new \Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $secret)');
+		if(!$val = Env::Get($key) ){
+			throw new Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $secret)');
 		}
 		return $val;
 	}
