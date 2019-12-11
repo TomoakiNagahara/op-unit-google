@@ -33,7 +33,7 @@ class Translation
 	 *
 	 * @var string
 	 */
-	const _API_KEY_ = 'google-cloud-translation';
+	const _API_KEY_ = 'google-translation';
 
 	/** Where error messages are stored.
 	 *
