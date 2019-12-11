@@ -15,6 +15,14 @@
  */
 namespace OP\UNIT\GOOGLE;
 
+/** Used class
+ *
+ * @creation  2019-04-03
+ */
+use Exception;
+use OP\OP_CORE;
+use OP\Env;
+
 /** Translate
  *
  * @creation  2017-06-08
@@ -28,7 +36,7 @@ class Translate
 	/** trait.
 	 *
 	 */
-	use \OP_CORE;
+	use OP_CORE;
 
 	/** Where error messages are stored.
 	 *
@@ -52,15 +60,21 @@ class Translate
 	static private function _ApiKey()
 	{
 		//	...
-		$google = \Env::Get('google');
-
-		//	...
-		$apikey = $google['translate']['apikey'] ?? $google['apikey'] ?? null;
+		static $apikey;
 
 		//	...
 		if(!$apikey ){
-			throw new \Exception("Has not been set Google Translate API key. Please set to Env::Set('google', ['translate'=>['apikey'=>'xxxx']])");
-		}
+			//	...
+			$google = Env::Get('google');
+
+			//	...
+			$apikey = $google['translate']['apikey'] ?? $google['apikey'] ?? null;
+
+			//	...
+			if(!$apikey ){
+				throw new Exception("Has not been set Google Translate API key. Please set to Env::Set('google', ['translate'=>['apikey'=>'xxxx']])");
+			};
+		};
 
 		//	...
 		return $apikey;
@@ -116,6 +130,18 @@ class Translate
 		//	...
 		$text = \OP\UNIT\Curl::Get($url, $post);
 		$json = json_decode($text, true);
+
+		//	...
+		if( isset($json['error']) ){
+			//	...
+			D($json);
+
+			//	...
+			\OP\Notice::Set($json['error']['status'].": ".$json['error']['message']);
+
+			//	...
+			return false;
+		};
 
 		//	...
 		$result = [];
