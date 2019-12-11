@@ -1,53 +1,49 @@
 Unit of google is Interface of google service.
 ===
 
-## How to use of Google OAuth
+## Usage
 
+### Instantiate
+
+```php
+$google = Unit::Instantiate('Google');
 ```
-//  Instantiate google object.
-if(!$google = Unit::Instantiate('Google') ){
-    //  Failed.
-    return;
-}
 
-//  Add common configurations.
-Env::Set('google',
-  [
-    'google'=>[
-      'oauth'=>[
-        'client_id'=>'xxxx',
-        'crient_secret'=>'xxxx'
-      ]
-    ]
-  ]
-);
+### OAuth
 
-//  Execute OAuth.
+#### Config
+
+```php
+Env::Set('google',[
+  'oauth'=>[
+    'client_id'     => 'xxxx',
+    'crient_secret' => 'xxxx',
+  ],
+]);
+```
+
+#### OAuth
+
+```php
 $user_info = $google->OAuth('http://localhost/callback_url');
 D($user_info);
 ```
 
-## How to use of Google Translation.
+### Translation
 
+#### Config
+
+```php
+Env::Set('google',[
+  'translation'=>[
+    'apikey' => 'xxxx',
+  ],
+]);
 ```
-//  Instantiate google object.
-if(!$google = Unit::Instantiate('Google') ){
-    //  Failed.
-    return;
-}
 
-//  Add common configurations.
-Env::Set('google',
-  [
-    'google'=>[
-      'translation'=>[
-        'apikey'=>'xxxx'
-      ]
-    ]
-  ]
-);
+#### Translation
 
-//  Execute OAuth.
+```php
 $to   = 'ja';
 $from = 'en';
 $translation = $google->Translate('This is an apple.', $to, $from);
