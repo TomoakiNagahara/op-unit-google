@@ -15,6 +15,14 @@
  */
 namespace OP\UNIT;
 
+/** Used class
+ *
+ * @creation  2019-04-03
+ */
+use OP\OP_CORE;
+use OP\OP_UNIT;
+use OP\IF_UNIT;
+
 /** Google
  *
  * @creation  2018-07-02
@@ -23,12 +31,12 @@ namespace OP\UNIT;
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-class Google
+class Google implements IF_UNIT
 {
 	/** trait
 	 *
 	 */
-	use \OP_CORE;
+	use OP_CORE, OP_UNIT;
 
 	private $_google_oauth_user_info;
 
@@ -62,7 +70,9 @@ class Google
 	function Translate(string $to, string $from, array $strings, $apikey=null)
 	{
 		//	...
-		include_once('Translate.class.php');
+		if(!class_exists('OP\UNIT\GOOGLE\Translate') ){
+			include_once('Translate.class.php');
+		};
 
 		//	...
 		$config = [];
@@ -80,8 +90,13 @@ class Google
 	 * @param	 string	 $lang
 	 * @return	 array	 $strings
 	 */
-	function Languages($lang=null)
+	function Language($lang=null)
 	{
+		//	...
+		if(!class_exists('OP\UNIT\GOOGLE\Translate') ){
+			include_once('Translate.class.php');
+		};
+
 		return GOOGLE\Translate::Language(['target'=>$lang]);
 	}
 
@@ -90,6 +105,9 @@ class Google
 	 */
 	function Debug()
 	{
-		D(GOOGLE\Translate::Errors());
+		//	...
+		if( class_exists('GOOGLE\Translate', false) ){
+			D(GOOGLE\Translate::Errors());
+		};
 	}
 }
